@@ -1,14 +1,14 @@
-# Різалка відео (iPhone) — «Порізати відео 2.7»
+# Різалка відео (iPhone) — «Порізати відео 2.6»
 
-Робоча версія: **Порізати відео 2.7.shortcut** (у цій папці, підписаний `shortcuts sign --mode anyone`).
+Робоча версія: **Порізати відео 2.6.shortcut** (у цій папці, підписаний `shortcuts sign --mode anyone`).
 Повна інструкція: https://claude.ai/code/artifact/b3e3b1dd-1f7e-4367-a5bd-404f142cf949
 
-Сценарій: Фото → Поділитися → «Порізати відео 2.7» → вказати секунди (типово 60) → частини в галереї. Все локально, без перекодування (`-c copy`), тому миттєво і без втрати якості.
+Сценарій: Фото → Поділитися → «Порізати відео 2.6» → вказати секунди (типово 60) → частини в галереї. Все локально, без перекодування (`-c copy`), тому миттєво і без втрати якості.
 
 ## Налаштування на новому iPhone
 
 1. Встановити повний **a-Shell** (не mini), відкрити, перевірити `ffmpeg -version`.
-2. Імпортувати `Порізати відео 2.7.shortcut` (AirDrop або через Mac + iCloud-синк).
+2. Імпортувати `Порізати відео 2.6.shortcut` (AirDrop або через Mac + iCloud-синк).
 3. В a-Shell: `pickFolder` → iCloud Drive → **Shortcuts** → підтвердити; далі `showmarks` і `renamemark <ім'я-з-showmarks> Shortcuts`.
 4. Перший запуск: роздати всі дозволи (Фото, a-Shell, збереження).
 
@@ -40,11 +40,11 @@
 - Закладка `~Shortcuts` створюється на кожному телефоні окремо (`pickFolder`), a-Shell дає їй технічне ім'я — треба `renamemark … Shortcuts`.
 - Робоча папка `VideoSplit.nosync`: суфікс `.nosync` вимикає iCloud-синхронізацію папки — проміжні файли не вивантажуються в хмару.
 - «Зупинити і відповісти» при прямому запуску запечено в plist: `WFWorkflowNoInputBehavior` → Name `WFWorkflowNoInputBehaviorShowError`, Parameters.Error = текст.
-- Порядок у галереї: ffmpeg копіює у частини дату зйомки оригіналу → всі частини «зняті» в одну секунду → Фото їх тасує. Фікс: `-map_metadata -1` (частини отримують час збереження) + «Відфільтрувати файли» за іменем перед циклом.
+- Порядок у галереї: ffmpeg копіює у частини дату зйомки оригіналу → всі частини «зняті» в одну секунду → Фото їх тасує. Фікс: `-map_metadata -1`; порядок реально забезпечує алфавітне розгортання вмісту папки при збереженні (сортувальний фільтр у плісті фактично сортує список з одного елемента — папки).
 - Частини — 60±1–2 с: різання по ключових кадрах (ціна `-c copy`). Точні різи можливі лише з перекодуванням (повільно).
-- Параметри-«пікери» (вибір папки, WFFilePickerParameter) НЕ приймають WFTextTokenAttachment: дія мовчки ігнорує параметр і бере неявний вхід з попередньої дії. Симптом: у дозволах Photos фігурує «1 folder» — в цикл поїхала сама папка. Для зв'язку дій достатньо ставити їх поспіль без явного параметра.
+- «Отримати вміст папки» так і не вдалось зв'язати з папкою: WFTextTokenAttachment у WFFilePickerParameter ігнорується (папка проїжджає далі транзитом), а БЕЗ параметра неявний вхід у імпортованому плісті теж не підхоплюється (v2.7: порожній список, нуль ітерацій, все зникло — відкочено). РОБОЧИЙ механізм 2.6: у цикл потрапляє сама папка, і «Зберегти у фотоальбом» сам розгортає її вміст. Тому запит дозволу «save 1 folder and N media items» — це НОРМА, не лагодити.
 - У діях a-Shell Execute перемикач «Показувати» (`ShowWhenRun`) типово увімкнений — показує вікно з виводом (для `rm` — порожнє). В обох діях має бути вимкнений.
 
 ## Як зібрано (для майбутніх правок)
 
-Плист шортката редагувався напряму (XML → binary plist → `shortcuts sign --mode anyone`). Проміжні версії і скрипти були в scratchpad сесії; фінальний XML — це v2.7 (scratchpad: shortcut-v27.xml): ask + setname + save(VideoSplit.nosync/input.mov) + a-Shell execute + get file + get folder contents + repeat/save + cleanup + notification. Схеми параметрів дій — з `/System/Library/PrivateFrameworks/WorkflowKit.framework/Versions/A/Resources/WFActions.plist`, enum openWindow — з `Base.lproj/Intents.intentdefinition` репозиторію holzschu/a-shell.
+Плист шортката редагувався напряму (XML → binary plist → `shortcuts sign --mode anyone`). Проміжні версії і скрипти були в scratchpad сесії; фінальний XML — це v2.6 (scratchpad: shortcut-v26.xml); v2.7 (прибраний WFFolder заради «чистого» ланцюжка) виявився неробочим — не повторювати: ask + setname + save(VideoSplit.nosync/input.mov) + a-Shell execute + get file + get folder contents + repeat/save + cleanup + notification. Схеми параметрів дій — з `/System/Library/PrivateFrameworks/WorkflowKit.framework/Versions/A/Resources/WFActions.plist`, enum openWindow — з `Base.lproj/Intents.intentdefinition` репозиторію holzschu/a-shell.
