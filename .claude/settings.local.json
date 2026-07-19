@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "Bash(python3 -c ' *)",
+      "Bash(plutil -convert xml1 shortcut.plist -o shortcut.xml)",
+      "Bash(python3)",
+      "Bash(plutil -lint shortcut-fixed.xml)",
+      "Bash(plutil -convert binary1 shortcut-fixed.xml -o shortcut-fixed.shortcut)",
+      "Bash(shortcuts sign *)",
+      "Bash(xxd)",
+      "Bash(ls /System/Library/PrivateFrameworks/WorkflowKit.framework/Versions/A/Resources/ 2>/dev/null | head -30; find /System/Library/PrivateFrameworks/WorkflowKit.framework -name \"WFActions*\" 2>/dev/null)",
+      "Read(//System/Library/PrivateFrameworks/WorkflowKit.framework/Versions/A/Resources/**)",
+      "Read(//System/Library/PrivateFrameworks/WorkflowKit.framework/**)",
+      "Bash(plutil -convert xml1 /System/Library/PrivateFrameworks/WorkflowKit.framework/Versions/A/Resources/WFActions.plist -o wfactions.xml)",
+      "Bash(plutil -lint shortcut-v22.xml)",
+      "Bash(plutil -convert binary1 shortcut-v22.xml -o shortcut-v22.shortcut)",
+      "Bash(plutil -lint shortcut-v23.xml)",
+      "Bash(plutil -convert binary1 shortcut-v23.xml -o shortcut-v23.shortcut)",
+      "Bash(curl -sL --max-time 20 \"https://raw.githubusercontent.com/holzschu/a-shell/master/a-Shell/Base.lproj/Intents.intentdefinition\" -o intents.plist)",
+      "Bash(curl -sL --max-time 20 \"https://api.github.com/repos/holzschu/a-shell/git/trees/master?recursive=1\")",
+      "Bash(curl -sL --max-time 20 \"https://raw.githubusercontent.com/holzschu/a-shell/master/Base.lproj/Intents.intentdefinition\" -o intents.plist)",
+      "Bash(plutil -convert xml1 intents.plist -o intents.xml)",
+      "Bash(plutil -lint shortcut-v24.xml)",
+      "Bash(plutil -convert binary1 shortcut-v24.xml -o shortcut-v24.shortcut)",
+      "Bash(grep -a -h -o \"WFWorkflowNoInputBehavior[A-Za-z]*\" /System/Volumes/Preboot/Cryptexes/OS/System/Library/dyld/dyld_shared_cache_arm64e /System/Volumes/Preboot/Cryptexes/OS/System/Library/dyld/dyld_shared_cache_arm64e.01 2>/dev/null | sort -u)",
+      "Read(//System/Volumes/Preboot/Cryptexes/OS/System/Library/dyld/**)",
+      "Bash(plutil -lint shortcut-v25.xml)",
+      "Bash(plutil -convert binary1 shortcut-v25.xml -o shortcut-v25.shortcut)",
+      "Bash(plutil -lint shortcut-v26.xml)",
+      "Bash(plutil -convert binary1 shortcut-v26.xml -o shortcut-v26.shortcut)"
+    ]
+  }
+}
